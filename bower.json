@@ -1,10 +1,24 @@
 {
-  "name": "example",
-  "private": "true",
-  "devDependencies": {
-    "ionic": "driftyco/ionic-bower#1.0.0-beta.13"
-  },
+  "name": "ng-challenge",
+  "version": "0.1.0",
+  "homepage": "https://github.com/mhelvens/ng-challenge",
+  "authors": [
+    "Michiel Helvensteijn <mhelvens@gmail.com>"
+  ],
+  "description": "a multiplayer game developed for the ng-europe 2014 hackathon challenge",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
   "dependencies": {
-    "three.js": "*"
+    "goblinphysics": "*",
+    "three.js": "*",
+    "jquery": "~2.1.1",
+    "jquery-mobile": "~1.4.4"
   }
 }
