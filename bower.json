@@ -19,6 +19,7 @@
     "goblinphysics": "*",
     "three.js": "*",
     "jquery": "~2.1.1",
-    "jquery-mobile": "~1.4.4"
+    "pusher": "~2.2.3",
+    "lodash": "~2.4.1"
   }
 }

@@ -1,7 +1,7 @@
 window.exampleUtils = (function(){
 	var renderer,
 		camera,
-		controls,
+		//controls,
 		world;//,
 		//stats;
 
@@ -18,10 +18,10 @@ window.exampleUtils = (function(){
 		exampleUtils.scene = new THREE.Scene();
 
 		camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 1000 );
-		camera.position.set( 30, -2, 0 );
+		camera.position.set( 0, 100, 0 );
 		camera.lookAt( exampleUtils.scene.position );
 
-		controls = new THREE.TrackballControls( camera, renderer.domElement );
+		//controls = new THREE.TrackballControls( camera, renderer.domElement );
 
 		var ambient_light = new THREE.AmbientLight( new THREE.Color( 0x333333 ) );
 		exampleUtils.scene.add( ambient_light );
@@ -40,6 +40,8 @@ window.exampleUtils = (function(){
 
 	var startGoblin = function() {
 		exampleUtils.world = world = new Goblin.World( new Goblin.BasicBroadphase(), new Goblin.NearPhase(), new Goblin.IterativeSolver() );
+		world.gravity.y = -100;
+		//console.log(world.gravity);
 	};
 
 	return {
@@ -48,6 +50,7 @@ window.exampleUtils = (function(){
 		renderer: null,
 		world: null,
 		ontick: null,
+		physicsKilled: false,
 
 		initialize: function() {
 			startThree();
@@ -98,22 +101,22 @@ window.exampleUtils = (function(){
 		},
 
 		render: function() {
-			// Sync objects
-			var i, object;
-			for ( i = 0; i < objects.length; i++ ) {
-				object = objects[i];
-				object.position.set(
-					object.goblin.position.x,
-					object.goblin.position.y,
-					object.goblin.position.z
-				);
-				object.quaternion.set(
-					object.goblin.rotation.x,
-					object.goblin.rotation.y,
-					object.goblin.rotation.z,
-					object.goblin.rotation.w
-				);
-			}
+				// Sync objects
+				var i, object;
+				for ( i = 0; i < objects.length; i++ ) {
+					object = objects[i];
+					object.position.set(
+						object.goblin.position.x,
+						object.goblin.position.y,
+						object.goblin.position.z
+					);
+					object.quaternion.set(
+						object.goblin.rotation.x,
+						object.goblin.rotation.y,
+						object.goblin.rotation.z,
+						object.goblin.rotation.w
+					);
+				}
 
 			renderer.render( exampleUtils.scene, camera );
 		},
@@ -121,9 +124,11 @@ window.exampleUtils = (function(){
 		run: function() {
 			requestAnimationFrame( exampleUtils.run );
 
-			controls.update();
+			//controls.update();
 			//stats.begin();
-			world.step( 1 / 60 );
+			if (!exampleUtils.physicsKilled) {
+				world.step( 1 / 60 );
+			}
 			//stats.end();
 			exampleUtils.render();
 
@@ -213,9 +218,9 @@ window.exampleUtils = (function(){
 		createPlane: function( orientation, half_width, half_length, mass, material ) {
 			var plane = new THREE.Mesh(
 				new THREE.BoxGeometry(
-					orientation === 1 || orientation === 2 ? half_width * 2 : 0.01,
-					orientation === 0 ? half_width * 2 : ( orientation === 2 ? half_length * 2 : 0.01 ),
-					orientation === 0 || orientation === 1 ? half_length * 2 : 0.01
+					half_width * 2,
+					5,
+					half_length * 2
 				),
 				material
 			);
@@ -225,7 +230,7 @@ window.exampleUtils = (function(){
 				//new Goblin.PlaneShape( orientation, half_width, half_length ),
 				new Goblin.BoxShape(
 					orientation === 1 || orientation === 2 ? half_width : 0.005,
-					orientation === 0 ? half_width : ( orientation === 2 ? half_length : 0.005 ),
+					orientation === 0 ? half_width : ( orientation === 2 ? half_length : 5 ),
 					orientation === 0 || orientation === 1 ? half_length : 0.005
 				),
 				mass

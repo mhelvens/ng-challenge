@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/mhelvens/ng-challenge/issues"
   },
-  "homepage": "https://github.com/mhelvens/ng-challenge"
+  "homepage": "https://github.com/mhelvens/ng-challenge",
+  "dependencies": {
+    "body-parser": "^1.9.1",
+    "pusher": "^1.0.2"
+  }
 }
